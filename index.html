@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+п»ї<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MoneyTrack — Облік особистих фінансів</title>
+    <title>MoneyTrack вЂ” РћР±Р»С–Рє РѕСЃРѕР±РёСЃС‚РёС… С„С–РЅР°РЅСЃС–РІ</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,73 +11,73 @@
 <body>
     <header class="app-header">
         <h1>MoneyTrack</h1>
-        <p class="app-subtitle">Персональний фінансовий дашборд</p>
-        <button type="button" id="open-transaction-modal-btn">+ Додати операцію</button>
+        <p class="app-subtitle">РџРµСЂСЃРѕРЅР°Р»СЊРЅРёР№ С„С–РЅР°РЅСЃРѕРІРёР№ РґР°С€Р±РѕСЂРґ</p>
+        <button type="button" id="open-transaction-modal-btn">+ Р”РѕРґР°С‚Рё РѕРїРµСЂР°С†С–СЋ</button>
     </header>
 
     <main class="app-main" id="app-root">
-        <section class="summary-section" aria-label="Ключові показники">
+        <section class="summary-section" aria-label="РљР»СЋС‡РѕРІС– РїРѕРєР°Р·РЅРёРєРё">
             <div class="card" id="balance-card">
-                <h2>Загальний баланс</h2>
-                <p id="total-balance">0.00 грн</p>
+                <h2>Р—Р°РіР°Р»СЊРЅРёР№ Р±Р°Р»Р°РЅСЃ</h2>
+                <p id="total-balance">0.00 РіСЂРЅ</p>
             </div>
             <div class="card" id="income-card">
-                <h2>Загальні доходи</h2>
-                <p id="total-income">0.00 грн</p>
+                <h2>Р—Р°РіР°Р»СЊРЅС– РґРѕС…РѕРґРё</h2>
+                <p id="total-income">0.00 РіСЂРЅ</p>
             </div>
             <div class="card" id="expense-card">
-                <h2>Загальні витрати</h2>
-                <p id="total-expense">0.00 грн</p>
+                <h2>Р—Р°РіР°Р»СЊРЅС– РІРёС‚СЂР°С‚Рё</h2>
+                <p id="total-expense">0.00 РіСЂРЅ</p>
             </div>
             <div class="card" id="budget-card">
-                <h2>Бюджет</h2>
-                <p id="budget-status">Ліміт не задано</p>
+                <h2>Р‘СЋРґР¶РµС‚</h2>
+                <p id="budget-status">Р›С–РјС–С‚ РЅРµ Р·Р°РґР°РЅРѕ</p>
             </div>
         </section>
 
-        <section class="transaction-form-section" aria-label="Додавання операції та бюджет">
+        <section class="transaction-form-section" aria-label="Р”РѕРґР°РІР°РЅРЅСЏ РѕРїРµСЂР°С†С–С— С‚Р° Р±СЋРґР¶РµС‚">
             <form id="transaction-form">
                 <select id="tx-type" name="type">
-                    <option value="expense">Витрата</option>
-                    <option value="income">Дохід</option>
+                    <option value="expense">Р’РёС‚СЂР°С‚Р°</option>
+                    <option value="income">Р”РѕС…С–Рґ</option>
                 </select>
-                <input type="number" id="tx-amount" name="amount" placeholder="Сума" step="0.01" />
+                <input type="number" id="tx-amount" name="amount" placeholder="РЎСѓРјР°" step="0.01" />
                 <select id="tx-category" name="category">
-                    <option value="">Оберіть категорію</option>
+                    <option value="">РћР±РµСЂС–С‚СЊ РєР°С‚РµРіРѕСЂС–СЋ</option>
                 </select>
                 <input type="date" id="tx-date" name="date" />
-                <input type="text" id="tx-note" name="note" placeholder="Примітка" />
-                <button type="submit">Зберегти операцію</button>
+                <input type="text" id="tx-note" name="note" placeholder="РџСЂРёРјС–С‚РєР°" />
+                <button type="submit">Р—Р±РµСЂРµРіС‚Рё РѕРїРµСЂР°С†С–СЋ</button>
             </form>
             <p id="form-error" role="alert"></p>
         </section>
 
-        <section class="filters-section" aria-label="Фільтрація транзакцій">
+        <section class="filters-section" aria-label="Р¤С–Р»СЊС‚СЂР°С†С–СЏ С‚СЂР°РЅР·Р°РєС†С–Р№">
             <select id="filter-type">
-                <option value="all">Усі типи</option>
-                <option value="income">Доходи</option>
-                <option value="expense">Витрати</option>
+                <option value="all">РЈСЃС– С‚РёРїРё</option>
+                <option value="income">Р”РѕС…РѕРґРё</option>
+                <option value="expense">Р’РёС‚СЂР°С‚Рё</option>
             </select>
             <select id="filter-category">
-                <option value="all">Усі категорії</option>
+                <option value="all">РЈСЃС– РєР°С‚РµРіРѕСЂС–С—</option>
             </select>
             <input type="date" id="filter-date-from" />
             <input type="date" id="filter-date-to" />
         </section>
 
-        <section class="charts-section" aria-label="Аналітика та графіки">
+        <section class="charts-section" aria-label="РђРЅР°Р»С–С‚РёРєР° С‚Р° РіСЂР°С„С–РєРё">
             <div class="card">
-                <h2>Графік фінансів</h2>
+                <h2>Р“СЂР°С„С–Рє С„С–РЅР°РЅСЃС–РІ</h2>
                 <canvas id="cashflow-chart"></canvas>
             </div>
             <div class="card">
-                <h2>Витрати за категоріями</h2>
+                <h2>Р’РёС‚СЂР°С‚Рё Р·Р° РєР°С‚РµРіРѕСЂС–СЏРјРё</h2>
                 <canvas id="category-chart"></canvas>
             </div>
         </section>
 
-        <section class="transactions-section" aria-label="Історія транзакцій">
-            <h2>Останні транзакції</h2>
+        <section class="transactions-section" aria-label="Р†СЃС‚РѕСЂС–СЏ С‚СЂР°РЅР·Р°РєС†С–Р№">
+            <h2>РћСЃС‚Р°РЅРЅС– С‚СЂР°РЅР·Р°РєС†С–С—</h2>
             <ul id="transactions-list"></ul>
         </section>
     </main>
