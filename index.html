@@ -1,276 +1,303 @@
-﻿<nav class="sidebar-nav" aria-label="Головна навігація">
-    <a href="#dashboard-section" class="nav-item active">
-        <span class="nav-dot"></span>
-        <span>Дашборд</span>
-    </a>
-    <a href="#charts-section" class="nav-item">
-        <span class="nav-dot"></span>
-        <span>Аналітика та графіки</span>
-    </a>
-    <a href="#budget-section" class="nav-item">
-        <span class="nav-dot"></span>
-        <span>Бюджет і ліміти</span>
-    </a>
-    <a href="#transactions-section" class="nav-item">
-        <span class="nav-dot"></span>
-        <span>Історія операцій</span>
-    </a>
-</nav>
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoneyTrack — Фінансовий Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Бічне меню навігації">
+      <div class="sidebar-brand">
+        <span class="brand-mark" aria-hidden="true">MT</span>
+        <div>
+          <div class="brand-name">MoneyTrack</div>
+          <div class="brand-tag">Personal Finance</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Головна навігація">
+        <a href="#overview-section" class="nav-item active" data-nav="overview">
+          <span class="nav-dot"></span>
+          <span>Огляд</span>
+        </a>
+        <a href="#analytics-section" class="nav-item" data-nav="analytics">
+          <span class="nav-dot"></span>
+          <span>Аналітика</span>
+        </a>
+        <a href="#transactions-section" class="nav-item" data-nav="transactions">
+          <span class="nav-dot"></span>
+          <span>Транзакції</span>
+        </a>
+        <a href="#budget-form-box" class="nav-item" data-nav="budget">
+          <span class="nav-dot"></span>
+          <span>Бюджет</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-note-title">Альфа-версія</div>
+        <p class="sidebar-note-text">Дані зберігаються локально у браузері через LocalStorage.</p>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" class="menu-toggle-btn" id="mobile-menu-toggle" aria-label="Відкрити меню">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <h1 class="page-title">Фінансовий Dashboard</h1>
+            <p class="page-subtitle">Контроль балансу, доходів, витрат і бюджетних лімітів</p>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button type="button" class="btn-primary" id="open-transaction-modal-btn">
+            + Додати операцію
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content" id="app-root">
+        <section class="kpi-grid" id="overview-section" aria-label="Основні фінансові показники">
+          <article class="card kpi-card kpi-balance" id="balance-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Загальний баланс</span>
+              <span class="kpi-badge badge-violet">Рахунок</span>
+            </div>
+            <div class="kpi-value" id="total-balance">0.00 ₴</div>
+            <div class="kpi-meta">
+              <span class="text-muted" id="balance-delta">Актуальний стан</span>
+            </div>
+          </article>
+
+          <article class="card kpi-card kpi-income" id="income-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Загальні доходи</span>
+              <span class="kpi-badge badge-green">Надходження</span>
+            </div>
+            <div class="kpi-value text-positive" id="total-income">0.00 ₴</div>
+            <div class="kpi-meta">
+              <span class="text-muted" id="income-count">0 операцій</span>
+            </div>
+          </article>
+
+          <article class="card kpi-card kpi-expense" id="expense-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Загальні витрати</span>
+              <span class="kpi-badge badge-red">Списання</span>
+            </div>
+            <div class="kpi-value text-negative" id="total-expense">0.00 ₴</div>
+            <div class="kpi-meta">
+              <span class="text-muted" id="expense-count">0 операцій</span>
+            </div>
+          </article>
+
+          <article class="card kpi-card kpi-budget" id="budget-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Ліміт витрат</span>
+              <span class="kpi-badge badge-violet">Бюджет</span>
+            </div>
+            <div class="kpi-value" id="budget-status">0%</div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="budget-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div class="kpi-meta">
+              <span class="text-muted" id="budget-details">0.00 / 20 000.00 ₴</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="charts-grid" id="analytics-section" aria-label="Графіки та аналітика">
+          <article class="card chart-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Фінансова активність</h2>
+                <p class="card-subtitle">Динаміка доходів і витрат за місяцями</p>
+              </div>
+              <span class="pill-tag">Chart.js</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="cashflow-chart"></canvas>
+            </div>
+          </article>
+
+          <article class="card chart-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Витрати за категоріями</h2>
+                <p class="card-subtitle">Розподіл списань у поточному періоді</p>
+              </div>
+              <span class="pill-tag">Категорії</span>
+            </div>
+            <div class="chart-canvas-wrap">
+              <canvas id="category-chart"></canvas>
+            </div>
+          </article>
+        </section>
+
+        <section class="forms-grid" aria-label="Керування бюджетом та швидкі дії">
+          <article class="card form-card" id="budget-form-box">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Бюджетне обмеження</h2>
+                <p class="card-subtitle">Встановіть місячний ліміт витрат для контролю балансу</p>
+              </div>
+            </div>
+
+            <form id="budget-form" class="stack-form">
+              <div class="form-row-2">
+                <div class="form-field">
+                  <label for="budget-limit-input">Місячний ліміт витрат (₴)</label>
+                  <input type="number" id="budget-limit-input" name="budgetLimit" placeholder="20000" step="0.01" min="0.01" />
+                </div>
+
+                <div class="form-field">
+                  <label for="budget-period-input">Період (РРРР-ММ)</label>
+                  <input type="text" id="budget-period-input" name="budgetPeriod" placeholder="2026-11" />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-secondary">Оновити ліміт</button>
+              </div>
+              <p id="budget-error" class="form-error" role="alert"></p>
+            </form>
+          </article>
+
+          <article class="card form-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Швидка аналітика</h2>
+                <p class="card-subtitle">Ключові інсайти на основі поточних транзакцій</p>
+              </div>
+            </div>
+            <div class="insights-list">
+              <div class="insight-row">
+                <span class="text-muted">Найбільша категорія витрат</span>
+                <strong id="top-expense-category">—</strong>
+              </div>
+              <div class="insight-row">
+                <span class="text-muted">Середні витрати за день</span>
+                <strong id="avg-daily-expense">0.00 ₴</strong>
+              </div>
+              <div class="insight-row">
+                <span class="text-muted">Залишок бюджету</span>
+                <strong id="budget-remaining">0.00 ₴</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card transactions-card" id="transactions-section" aria-label="Останні транзакції">
+          <div class="card-header transactions-header">
+            <div>
+              <h2 class="card-title">Останні транзакції</h2>
+              <p class="card-subtitle">Історія фінансових операцій та швидка фільтрація</p>
+            </div>
+
+            <div class="filters-bar">
+              <select id="filter-type" aria-label="Фільтр за типом">
+                <option value="all">Усі типи</option>
+                <option value="income">Доходи</option>
+                <option value="expense">Витрати</option>
+              </select>
+
+              <select id="filter-category" aria-label="Фільтр за категорією">
+                <option value="all">Усі категорії</option>
+              </select>
+
+              <input type="date" id="filter-date-from" aria-label="Дата від" />
+              <input type="date" id="filter-date-to" aria-label="Дата до" />
+              <button type="button" class="btn-secondary" id="reset-filters-btn">Скинути</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="transactions-table">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Категорія</th>
+                  <th>Опис</th>
+                  <th>Тип</th>
+                  <th class="align-right">Сума</th>
+                  <th class="align-right">Дії</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 
-<div class="sidebar-footer">
-    <div class="sidebar-note-title">Порада дня</div>
-    <p class="sidebar-note-text">
-        Фіксуйте витрати одразу після покупки та тримайте місячний ліміт під контролем.
-    </p>
-</div>
-</aside>
-
-<div class="workspace" id="app-root">
-    <header class="topbar">
-        <div class="topbar-left">
-            <button type="button" class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Відкрити меню">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div>
-                <h1 class="page-title">Огляд фінансів</h1>
-                <p class="page-subtitle">Персональний фінансовий дашборд</p>
-            </div>
+  <!-- Модальне вікно додавання транзакції -->
+  <div class="modal-backdrop is-hidden" id="transaction-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog card">
+      <div class="modal-header">
+        <div>
+          <h2 class="card-title" id="modal-title">Додати фінансову операцію</h2>
+          <p class="card-subtitle">Заповніть усі обов’язкові поля для оновлення балансу</p>
         </div>
-
-        <button type="button" class="btn-primary" id="open-transaction-modal-btn">
-            + Додати операцію
+        <button type="button" class="modal-close-btn" id="close-transaction-modal-btn" aria-label="Закрити модальне вікно">
+          ×
         </button>
-    </header>
+      </div>
 
-    <main class="main-content">
-
-        <section class="kpi-grid" id="dashboard-section" aria-label="Ключові показники">
-            <article class="card kpi-card" id="balance-card">
-                <div class="kpi-header">
-                    <span class="kpi-label">Загальний баланс</span>
-                    <span class="kpi-badge badge-violet">Разом</span>
-                </div>
-                <div class="kpi-value" id="total-balance">0.00 грн</div>
-                <div class="kpi-meta text-muted">Актуальний залишок коштів</div>
-            </article>
-
-            <article class="card kpi-card" id="income-card">
-                <div class="kpi-header">
-                    <span class="kpi-label">Загальні доходи</span>
-                    <span class="kpi-badge badge-green">Дохід</span>
-                </div>
-                <div class="kpi-value text-positive" id="total-income">0.00 грн</div>
-                <div class="kpi-meta text-muted">Усі надходження за період</div>
-            </article>
-
-            <article class="card kpi-card" id="expense-card">
-                <div class="kpi-header">
-                    <span class="kpi-label">Загальні витрати</span>
-                    <span class="kpi-badge badge-red">Витрати</span>
-                </div>
-                <div class="kpi-value text-negative" id="total-expense">0.00 грн</div>
-                <div class="kpi-meta text-muted">Усі списання за період</div>
-            </article>
-
-            <article class="card kpi-card" id="budget-card">
-                <div class="kpi-header">
-                    <span class="kpi-label">Місячний бюджет</span>
-                    <span class="pill-tag" id="budget-percent-badge">0%</span>
-                </div>
-                <div class="kpi-value" id="budget-status">Ліміт не задано</div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="budget-progress-bar" style="width: 0%"></div>
-                </div>
-            </article>
-        </section>
-
-        <section class="charts-grid" id="charts-section" aria-label="Графіки фінансів">
-            <article class="card">
-                <div class="card-header">
-                    <div>
-                        <h2 class="card-title">Витрати за категоріями</h2>
-                        <p class="card-subtitle">Розподіл коштів у відсотках та гривнях</p>
-                    </div>
-                    <span class="pill-tag">Діаграма</span>
-                </div>
-                <div class="chart-canvas-wrap">
-                    <canvas id="category-chart"></canvas>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div>
-                        <h2 class="card-title">Динаміка доходів і витрат</h2>
-                        <p class="card-subtitle">Порівняння грошових потоків за часом</p>
-                    </div>
-                    <span class="pill-tag">Тренд</span>
-                </div>
-                <div class="chart-canvas-wrap">
-                    <canvas id="cashflow-chart"></canvas>
-                </div>
-            </article>
-        </section>
-
-        <section class="forms-grid" id="budget-section" aria-label="Бюджет та зведення">
-            <article class="card">
-                <div class="card-header">
-                    <div>
-                        <h2 class="card-title">Ліміт місячного бюджету</h2>
-                        <p class="card-subtitle">Встановіть граничну суму витрат на місяць</p>
-                    </div>
-                </div>
-
-                <form class="stack-form" id="budget-form">
-                    <div class="form-field">
-                        <label for="budget-limit-input">Сума ліміту (грн)</label>
-                        <input type="number"
-                               id="budget-limit-input"
-                               min="0"
-                               step="0.01"
-                               placeholder="Наприклад, 15000"
-                               required />
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn-secondary" id="save-budget-btn">
-                            Зберегти бюджет
-                        </button>
-                    </div>
-                </form>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div>
-                        <h2 class="card-title">Швидка аналітика</h2>
-                        <p class="card-subtitle">Ключові показники активності</p>
-                    </div>
-                </div>
-
-                <div class="insights-list" id="insights-list">
-                    <div class="insight-row">
-                        <span class="text-muted">Найбільша категорія витрат</span>
-                        <strong id="top-expense-category">—</strong>
-                    </div>
-                    <div class="insight-row">
-                        <span class="text-muted">Кількість операцій</span>
-                        <strong id="transactions-count">0</strong>
-                    </div>
-                    <div class="insight-row">
-                        <span class="text-muted">Середній чек витрати</span>
-                        <strong id="average-expense">0.00 грн</strong>
-                    </div>
-                </div>
-            </article>
-    
-        <section class="card" id="transactions-section" aria-label="Список транзакцій">
-            <div class="card-header transactions-header">
-                <div>
-                    <h2 class="card-title">Історія операцій</h2>
-                    <p class="card-subtitle">Фільтруйте доходи та витрати за типом, категорією або датою</p>
-                </div>
-
-                <div class="filters-bar">
-                    <select id="filter-type" aria-label="Фільтр за типом">
-                        <option value="all">Усі типи</option>
-                        <option value="income">Доходи</option>
-                        <option value="expense">Витрати</option>
-                    </select>
-
-                    <select id="filter-category" aria-label="Фільтр за категорією">
-                        <option value="all">Усі категорії</option>
-                        <option value="Зарплата">Зарплата</option>
-                        <option value="Фріланс">Фріланс</option>
-                        <option value="Продукти">Продукти</option>
-                        <option value="Транспорт">Транспорт</option>
-                        <option value="Комунальні">Комунальні</option>
-                        <option value="Розваги">Розваги</option>
-                        <option value="Інше">Інше</option>
-                    </select>
-
-                    <input type="date" id="filter-date-from" aria-label="Дата від" />
-                    <input type="date" id="filter-date-to" aria-label="Дата до" />
-
-                    <button type="button" class="btn-secondary" id="reset-filters-btn">
-                        Скинути
-                    </button>
-                </div>
-            </div>
-
-            <div class="table-wrapper">
-                <table class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Тип</th>
-                            <th>Категорія</th>
-                            <th>Примітка</th>
-                            <th class="align-right">Сума</th>
-                            <th class="align-right">Дія</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactions-tbody">
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                Поки що немає жодної операції. Натисніть «+ Додати операцію», щоб почати облік.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-</div>
-
-<form class="stack-form" id="transaction-form">
-    <div class="form-row-2">
-        <div class="form-field">
-            <label for="transaction-type">Тип операції</label>
-            <select id="transaction-type" required>
-                <option value="expense">Витрата</option>
-                <option value="income">Дохід</option>
+      <form id="transaction-form" class="stack-form" novalidate>
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="tx-type">Тип операції *</label>
+            <select id="tx-type" name="type" required>
+              <option value="expense">Витрата</option>
+              <option value="income">Дохід</option>
             </select>
+          </div>
+
+          <div class="form-field">
+            <label for="tx-amount">Сума (₴) *</label>
+            <input type="number" id="tx-amount" name="amount" placeholder="Наприклад: 450.00" step="0.01" min="0.01" required />
+          </div>
         </div>
 
-        <div class="form-field">
-            <label for="transaction-amount">Сума (грн)</label>
-            <input type="number" id="transaction-amount" min="0.01" step="0.01" placeholder="0.00" required />
-        </div>
-    </div>
-
-    <div class="form-row-2">
-        <div class="form-field">
-            <label for="transaction-category">Категорія</label>
-            <select id="transaction-category" required>
-                <option value="Продукти">Продукти</option>
-                <option value="Транспорт">Транспорт</option>
-                <option value="Комунальні">Комунальні</option>
-                <option value="Розваги">Розваги</option>
-                <option value="Зарплата">Зарплата</option>
-                <option value="Фріланс">Фріланс</option>
-                <option value="Інше">Інше</option>
+        <div class="form-row-2">
+          <div class="form-field">
+            <label for="tx-category">Категорія *</label>
+            <select id="tx-category" name="categoryId" required>
+              <option value="">Оберіть категорію</option>
             </select>
+          </div>
+
+          <div class="form-field">
+            <label for="tx-date">Дата *</label>
+            <input type="date" id="tx-date" name="date" required />
+          </div>
         </div>
 
         <div class="form-field">
-            <label for="transaction-date">Дата</label>
-            <input type="date" id="transaction-date" required />
+          <label for="tx-note">Опис</label>
+          <input type="text" id="tx-note" name="note" maxlength="200" placeholder="Короткий опис операції (до 200 символів)" />
         </div>
-    </div>
 
-    <div class="form-field">
-        <label for="transaction-note">Примітка (необов'язково)</label>
-        <input type="text" id="transaction-note" placeholder="Короткий коментар до операції" />
-    </div>
+        <p id="form-error" class="form-error" role="alert"></p>
 
-    <div class="form-error" id="transaction-form-error" aria-live="polite"></div>
-
-    <div class="modal-actions">
-        <button type="button" class="btn-secondary" id="cancel-transaction-btn">Скасувати</button>
-        <button type="submit" class="btn-primary" id="save-transaction-btn">Зберегти операцію</button>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="cancel-transaction-modal-btn">Скасувати</button>
+          <button type="submit" class="btn-primary" id="submit-transaction-btn">Зберегти операцію</button>
+        </div>
+      </form>
     </div>
-</form>
-</div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
